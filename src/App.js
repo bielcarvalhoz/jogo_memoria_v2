@@ -8,28 +8,129 @@ import HomeScreen from "./components/HomeScreen";
 import Scoreboard from "./components/Scoreboard";
 import Scoretable from "./components/scoreTable";
 import NameInput from "./components/NameInput";
+import CuriosityModal from "./components/CuriosityModal";
 import "./App.css";
 
 // Imagens para as cartas - você pode usar caminhos relativos ou URLs
 const cardImages = [
   // Itens recicláveis com suas respectivas cores de reciclagem
-  "/images/cards/papel.png", // Papel (azul)
-  "/images/cards/plastico.png", // Plástico (vermelho)
-  "/images/cards/vidro.png", // Vidro (verde)
-  "/images/cards/metal.png", // Metal (amarelo)
-  "/images/cards/organico.png", // Orgânico (marrom)
-  "/images/cards/eletronico.png", // Eletrônico (laranja)
-  "/images/cards/bateria.png", // Bateria
-  "/images/cards/oleo.png", // Óleo usado
-  "/images/cards/pilha.png", // Pilhas
-  "/images/cards/lampada.png", // Lâmpadas
-  "/images/cards/tetrapak.png", // Tetrapak
-  "/images/cards/pet.png", // Garrafa PET
-  "/images/cards/lata.png", // Lata de alumínio
-  "/images/cards/jornal.png", // Jornal
-  "/images/cards/cd.png", // CD/DVD
-  "/images/cards/pneu.png", // Pneu
+  "papel", // Papel (azul)
+  "plastico", // Plástico (vermelho)
+  "vidro", // Vidro (verde)
+  "metal", // Metal (amarelo)
+  "organico", // Orgânico (marrom)
+  "eletronico", // Eletrônico (laranja)
+  "bateria", // Bateria
+  "oleo", // Óleo usado
+  "pilha", // Pilhas
+  "lampada", // Lâmpadas
+  "tetrapak", // Tetrapak
+  "pet", // Garrafa PET
+  "lata", // Lata de alumínio
+  "papelao", // Papelao
+  "cd", // CD/DVD
+  "pneu", // Pneu
 ];
+
+// Base de dados de curiosidades para cada item
+const curiosities = {
+  papel: {
+    title: "Papel",
+    fact: "Uma tonelada de papel reciclado economiza cerca de 17 árvores! O papel pode ser reciclado até 7 vezes antes de suas fibras ficarem muito curtas.",
+    icon: "/images/cards/papel.png",
+    color: "#4A90E2",
+  },
+  plastico: {
+    title: "Plástico",
+    fact: "O plástico pode levar até 400 anos para se decomor na natureza! Mas quando reciclado, pode se transformar em roupas, tapetes e até mesmo novos produtos plásticos.",
+    icon: "/images/cards/plastico.png",
+    color: "#E74C3C",
+  },
+  vidro: {
+    title: "Vidro",
+    fact: "O vidro é 100% reciclável e pode ser reciclado infinitas vezes sem perder qualidade! Uma garrafa de vidro reciclada economiza energia suficiente para acender uma lâmpada por 4 horas.",
+    icon: "/images/cards/vidro.png",
+    color: "#27AE60",
+  },
+  metal: {
+    title: "Metal",
+    fact: "Reciclar uma lata de alumínio economiza 95% da energia necessária para produzir uma nova! O alumínio pode ser reciclado infinitas vezes sem perder suas propriedades.",
+    icon: "/images/cards/metal.png",
+    color: "#F39C12",
+  },
+  organico: {
+    title: "Resíduo Orgânico",
+    fact: "Os resíduos orgânicos representam cerca de 50% do lixo doméstico! Quando compostados, viram adubo natural que enriquece o solo e reduz a necessidade de fertilizantes químicos.",
+    icon: "/images/cards/organico.png",
+    color: "#8E44AD",
+  },
+  eletronico: {
+    title: "Lixo Eletrônico",
+    fact: "O lixo eletrônico é o que mais cresce no mundo! Contém metais preciosos como ouro e prata, mas também substâncias tóxicas que podem contaminar o meio ambiente.",
+    icon: "/images/cards/eletronico.png",
+    color: "#E67E22",
+  },
+  bateria: {
+    title: "Bateria",
+    fact: "Uma pilha comum pode contaminar até 20.000 litros de água! Por isso é importante descartá-las em locais apropriados para reciclagem de materiais perigosos.",
+    icon: "/images/cards/bateria.png",
+    color: "#34495E",
+  },
+  oleo: {
+    title: "Óleo de Cozinha",
+    fact: "Um litro de óleo usado pode contaminar até 1 milhão de litros de água! Quando reciclado, pode virar sabão, biodiesel ou até mesmo tinta.",
+    icon: "/images/cards/oleo.png",
+    color: "#D35400",
+  },
+  pilha: {
+    title: "Pilhas",
+    fact: "As pilhas contêm metais pesados como mercúrio, chumbo e cádmio. Uma única pilha pode contaminar 400 litros de água por 50 anos!",
+    icon: "/images/cards/pilha.png",
+    color: "#95A5A6",
+  },
+  lampada: {
+    title: "Lâmpadas",
+    fact: "Lâmpadas fluorescentes contêm mercúrio e devem ser recicladas em locais especiais. Já as LEDs podem durar até 25 anos e são muito mais eficientes!",
+    icon: "/images/cards/lampada.png",
+    color: "#F1C40F",
+  },
+  tetrapak: {
+    title: "Tetrapak",
+    fact: "As embalagens Tetrapak são feitas de 75% papel, 20% plástico e 5% alumínio. Quando recicladas, podem virar papel higiênico, telhas e até móveis!",
+    icon: "/images/cards/tetrapak.png",
+    color: "#3498DB",
+  },
+  pet: {
+    title: "Garrafa PET",
+    fact: "Uma garrafa PET leva cerca de 400 anos para se decomor! Mas 5 garrafas PET recicladas podem virar uma camiseta, e 25 garrafas podem virar um casaco de lã!",
+    icon: "/images/cards/pet.png",
+    color: "#E74C3C",
+  },
+  lata: {
+    title: "Lata de Alumínio",
+    fact: "O Brasil é campeão mundial em reciclagem de latas de alumínio, com 97% de reciclagem! Uma lata reciclada volta às prateleiras em apenas 30 dias.",
+    icon: "/images/cards/lata.png",
+    color: "#BDC3C7",
+  },
+  papelao: {
+    title: "Papelão",
+    fact: "O papelão pode ser reciclado até 25 vezes! É feito principalmente de fibras recicladas e sua reciclagem economiza 50% da energia necessária para produzir papelão novo.",
+    icon: "/images/cards/papelao.png",
+    color: "#D2691E",
+  },
+  cd: {
+    title: "CD/DVD",
+    fact: "CDs e DVDs são feitos de policarbonato e podem levar mais de 100 anos para se decompor! Quando reciclados, podem virar novos CDs ou até mesmo peças automotivas.",
+    icon: "/images/cards/cd.png",
+    color: "#9B59B6",
+  },
+  pneu: {
+    title: "Pneu",
+    fact: "Um pneu pode levar mais de 600 anos para se decompor! Quando reciclado, pode virar asfalto, solados de sapato, pisos esportivos e até combustível para fornos.",
+    icon: "/images/cards/pneu.png",
+    color: "#2C3E50",
+  },
+};
 
 const App = () => {
   // Cores extraídas da imagem do logo (mesmas dos outros componentes)
@@ -60,6 +161,17 @@ const App = () => {
   const [currentScore, setCurrentScore] = useState(0);
   const [showInstructions, setShowInstructions] = useState(false);
 
+  // Novos estados para o sistema de curiosidades
+  const [showCuriosity, setShowCuriosity] = useState(false);
+  const [currentCuriosity, setCurrentCuriosity] = useState(null);
+  const [curiositiesEnabled, setCuriositiesEnabled] = useState(true);
+  const [isTimerPaused, setIsTimerPaused] = useState(false);
+
+  // Função para alternar o estado das curiosidades
+  const toggleCuriosities = () => {
+    setCuriositiesEnabled((prevState) => !prevState);
+  };
+
   // Inicializa o jogo
   const initializeGame = useCallback(() => {
     let pairsCount;
@@ -82,10 +194,22 @@ const App = () => {
     const selectedImages = cardImages.slice(0, pairsCount);
     let newCards = [];
 
-    selectedImages.forEach((imagePath, index) => {
+    selectedImages.forEach((itemType, index) => {
       // Cria dois cards com a mesma imagem (um par)
-      newCards.push({ id: index * 2, symbol: imagePath, isFlipped: false, isMatched: false });
-      newCards.push({ id: index * 2 + 1, symbol: imagePath, isFlipped: false, isMatched: false });
+      newCards.push({
+        id: index * 2,
+        item: itemType,
+        symbol: curiosities[itemType].icon,
+        isFlipped: false,
+        isMatched: false,
+      });
+      newCards.push({
+        id: index * 2 + 1,
+        item: itemType,
+        symbol: curiosities[itemType].icon,
+        isFlipped: false,
+        isMatched: false,
+      });
     });
 
     // Embaralha as cartas
@@ -98,6 +222,7 @@ const App = () => {
     setTimer(0);
     setIsActive(true);
     setGameOver(false);
+    setIsTimerPaused(false);
     setStatusMessage("Jogo iniciado! Encontre os pares.");
   }, [difficulty]);
 
@@ -113,11 +238,28 @@ const App = () => {
 
   // Lida com o clique na carta
   const handleCardClick = (id) => {
-    if (flippedCards.length === 2) return;
+    if (flippedCards.length === 2 || isTimerPaused) return;
 
     setCards((prevCards) => prevCards.map((card) => (card.id === id ? { ...card, isFlipped: true } : card)));
 
     setFlippedCards((prevFlipped) => [...prevFlipped, id]);
+  };
+
+  // Função para mostrar curiosidade
+  const showCuriosityModal = (itemType) => {
+    const curiosity = curiosities[itemType];
+    if (curiosity && curiositiesEnabled) {
+      setCurrentCuriosity(curiosity);
+      setShowCuriosity(true);
+      setIsTimerPaused(true);
+    }
+  };
+
+  // Função para fechar modal de curiosidade
+  const closeCuriosityModal = () => {
+    setShowCuriosity(false);
+    setCurrentCuriosity(null);
+    setIsTimerPaused(false);
   };
 
   // Verifica se há um par quando duas cartas são viradas
@@ -138,6 +280,9 @@ const App = () => {
         setMatchedPairs((prevMatched) => prevMatched + 1);
         setFlippedCards([]);
         setStatusMessage("Par encontrado! Continue assim!");
+
+        // Mostra curiosidade se estiver habilitada
+        showCuriosityModal(firstCard.item);
       } else {
         // Não é um par, vira as cartas de volta após um delay
         setStatusMessage("Não é um par. Tente novamente!");
@@ -153,7 +298,7 @@ const App = () => {
         }, 1000);
       }
     }
-  }, [flippedCards, cards]);
+  }, [flippedCards, cards, curiositiesEnabled]);
 
   // Verifica se o jogo acabou
   useEffect(() => {
@@ -196,11 +341,11 @@ const App = () => {
     }
   };
 
-  // Timer
+  // Timer - agora considera se está pausado
   useEffect(() => {
     let interval = null;
 
-    if (isActive) {
+    if (isActive && !isTimerPaused) {
       interval = setInterval(() => {
         setTimer((prevTimer) => prevTimer + 1);
       }, 1000);
@@ -209,7 +354,7 @@ const App = () => {
     }
 
     return () => clearInterval(interval);
-  }, [isActive, timer]);
+  }, [isActive, timer, isTimerPaused]);
 
   // Calcula a pontuação do jogador
   const calculateScore = () => {
@@ -289,7 +434,13 @@ const App = () => {
   }, [difficulty, isActive, cards.length, initializeGame, showHomeScreen]);
 
   if (showHomeScreen) {
-    return <HomeScreen onStartGame={handleStartGame} />;
+    return (
+      <HomeScreen
+        onStartGame={handleStartGame}
+        curiositiesEnabled={curiositiesEnabled}
+        onToggleCuriosities={toggleCuriosities}
+      />
+    );
   }
 
   return (
@@ -297,7 +448,7 @@ const App = () => {
       className="memory-game"
       style={{
         backgroundColor: colors.bgColor,
-        minHeight: "100vh",
+        minHeight: "100dvh",
         fontFamily: "'Nunito', sans-serif",
         color: colors.darkGreen,
         padding: "1.5rem",
@@ -347,23 +498,53 @@ const App = () => {
           >
             Encontre todos os pares e aprenda sobre reciclagem!
           </p>
-          <button
-            onClick={handleBackToHome}
-            style={{
-              backgroundColor: "transparent",
-              color: colors.darkGreen,
-              border: `2px solid ${colors.darkGreen}`,
-              borderRadius: "8px",
-              padding: "0.5rem 1.25rem",
-              fontSize: "0.9rem",
-              fontWeight: "600",
-              cursor: "pointer",
-              transition: "all 0.2s ease",
-            }}
-            className="btn-hover-effect"
-          >
-            Voltar ao Menu
-          </button>
+          <div style={{ display: "flex", gap: "1rem", justifyContent: "center", alignItems: "center" }}>
+            <button
+              onClick={handleBackToHome}
+              style={{
+                backgroundColor: "transparent",
+                color: colors.darkGreen,
+                border: `2px solid ${colors.darkGreen}`,
+                borderRadius: "8px",
+                padding: "0.5rem 1.25rem",
+                fontSize: "0.9rem",
+                fontWeight: "600",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+              }}
+              className="btn-hover-effect"
+            >
+              Voltar ao Menu
+            </button>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                fontSize: "0.9rem",
+                color: colors.mediumGreen,
+              }}
+            >
+              <span>Curiosidades:</span>
+              <button
+                onClick={toggleCuriosities}
+                style={{
+                  padding: "0.25rem 0.75rem",
+                  borderRadius: "15px",
+                  backgroundColor: curiositiesEnabled ? colors.brightGreen : "#ccc",
+                  color: "white",
+                  fontSize: "0.8rem",
+                  fontWeight: "600",
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "all 0.2s ease",
+                }}
+                className="btn-hover-effect"
+              >
+                {curiositiesEnabled ? "ON" : "OFF"}
+              </button>
+            </div>
+          </div>
         </header>
 
         <div
@@ -381,6 +562,18 @@ const App = () => {
           role="alert"
         >
           {statusMessage}
+          {isTimerPaused && (
+            <span
+              style={{
+                marginLeft: "1rem",
+                fontSize: "0.9rem",
+                color: colors.mediumGreen,
+                fontStyle: "italic",
+              }}
+            >
+              (Timer pausado)
+            </span>
+          )}
         </div>
 
         <div
@@ -493,6 +686,13 @@ const App = () => {
       <InstructionsModal
         isOpen={showInstructions}
         onClose={() => setShowInstructions(false)}
+        colors={colors}
+      />
+
+      <CuriosityModal
+        show={showCuriosity}
+        curiosity={currentCuriosity}
+        onClose={closeCuriosityModal}
         colors={colors}
       />
 
