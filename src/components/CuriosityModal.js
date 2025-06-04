@@ -29,7 +29,7 @@ const CuriosityModal = ({ show, curiosity, onClose, colors }) => {
           maxWidth: "500px",
           width: "100%",
           maxHeight: "80vh",
-          overflow: "hidden",
+          overflow: "auto",
           position: "relative",
           boxShadow: "0 20px 60px rgba(0, 0, 0, 0.3)",
           border: `3px solid ${curiosity.color || colors.brightGreen}`,
@@ -169,32 +169,6 @@ const CuriosityModal = ({ show, curiosity, onClose, colors }) => {
             Continuar Jogando! 🎮
           </button>
         </div>
-
-        {/* Decoração de fundo */}
-        <div
-          style={{
-            position: "absolute",
-            top: "-10px",
-            right: "-10px",
-            width: "100px",
-            height: "100px",
-            backgroundColor: `${curiosity.color || colors.brightGreen}10`,
-            borderRadius: "50%",
-            zIndex: -1,
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: "-20px",
-            left: "-20px",
-            width: "80px",
-            height: "80px",
-            backgroundColor: `${curiosity.color || colors.brightGreen}08`,
-            borderRadius: "50%",
-            zIndex: -1,
-          }}
-        />
       </div>
 
       {/* CSS para animações */}

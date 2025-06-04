@@ -238,6 +238,7 @@ const App = () => {
     setTimer(0);
     setIsActive(true);
     setGameOver(false);
+    setShowScoreboard(false);
     setIsTimerPaused(false);
     setGameInitialized(true); // Marca que o jogo foi inicializado
     setStatusMessage("Jogo iniciado! Encontre os pares.");
