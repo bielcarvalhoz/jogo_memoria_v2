@@ -1,5 +1,7 @@
 // src/components/Scoretable.js
 import React, { useEffect, useState } from "react";
+import { collection, query, orderBy, limit, getDocs } from "firebase/firestore";
+import { db } from "../firebaseConfig"; // ajuste o caminho conforme necessário
 
 const Scoretable = ({ show, onClose, onPlayAgain }) => {
   const [scores, setScores] = useState([]);
@@ -24,8 +26,10 @@ const Scoretable = ({ show, onClose, onPlayAgain }) => {
   const fetchScores = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch("/api/scores");
-      const data = await response.json();
+      const scoresRef = collection(db, "scores");
+      const q = query(scoresRef, orderBy("score", "desc"), limit(10));
+      const querySnapshot = await getDocs(q);
+      const data = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       setScores(data);
       setIsLoading(false);
     } catch (error) {

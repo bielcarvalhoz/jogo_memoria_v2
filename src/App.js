@@ -10,6 +10,8 @@ import Scoretable from "./components/scoreTable";
 import NameInput from "./components/NameInput";
 import CuriosityModal from "./components/CuriosityModal";
 import "./App.css";
+import { db } from "./firebaseConfig";
+import { getDocs, addDoc, collection, query, orderBy, limit } from "firebase/firestore";
 
 // Imagens para as cartas - você pode usar caminhos relativos ou URLs
 const cardImages = [
@@ -317,20 +319,14 @@ const App = () => {
   // Verifica se a pontuação é alta o suficiente para estar no top 10
   const checkIfHighScore = async (score) => {
     try {
-      const response = await fetch("/api/scores/check", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          score,
-          difficulty,
-        }),
-      });
+      const scoresRef = collection(db, "scores");
+      const q = query(scoresRef, orderBy("score", "desc"), limit(10));
+      const snapshot = await getDocs(q);
 
-      const data = await response.json();
+      const scores = snapshot.docs.map((doc) => doc.data());
+      const isHighScore = scores.length < 10 || scores.some((s) => score > s.score);
 
-      if (data.isHighScore) {
+      if (isHighScore) {
         setIsHighScore(true);
         setShowNameInput(true);
       } else {
@@ -338,7 +334,6 @@ const App = () => {
       }
     } catch (error) {
       console.error("Erro ao verificar pontuação:", error);
-      // Em caso de erro, mostra o modal de fim de jogo
       setGameOver(true);
     }
   };
@@ -406,13 +401,7 @@ const App = () => {
         date: new Date().toISOString(),
       };
 
-      await fetch("/api/scores", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(scoreData),
-      });
+      await addDoc(collection(db, "scores"), scoreData);
 
       setShowNameInput(false);
       setShowScoreboard(true);
