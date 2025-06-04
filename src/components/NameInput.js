@@ -165,7 +165,6 @@ const NameInput = ({ show, score, moves, time, difficulty, onSave, onCancel }) =
                 }}
                 maxLength={20}
                 disabled={isSaving}
-                autoFocus
                 required
                 placeholder="Digite seu nome aqui"
                 style={{
