@@ -170,6 +170,19 @@ const App = () => {
   const [curiositiesEnabled, setCuriositiesEnabled] = useState(true);
   const [isTimerPaused, setIsTimerPaused] = useState(false);
 
+  // Estado para detectar dispositivo móvel
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  // Effect para monitorar mudanças no tamanho da tela
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   // Função para alternar o estado das curiosidades
   const toggleCuriosities = () => {
     setCuriositiesEnabled((prevState) => !prevState);
@@ -423,8 +436,6 @@ const App = () => {
     setGameOver(true);
   };
 
-  // REMOVIDO: O useEffect que iniciava automaticamente o jogo
-
   if (showHomeScreen) {
     return (
       <HomeScreen
@@ -443,14 +454,21 @@ const App = () => {
         minHeight: "100dvh",
         fontFamily: "'Nunito', sans-serif",
         color: colors.darkGreen,
-        padding: "1.5rem",
+        padding: isMobile ? "1rem" : "1.5rem",
       }}
     >
-      <div className="container">
+      <div
+        className="container"
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          width: "100%",
+        }}
+      >
         <header
           style={{
             textAlign: "center",
-            marginBottom: "2rem",
+            marginBottom: isMobile ? "1.5rem" : "2rem",
           }}
         >
           <div
@@ -459,22 +477,25 @@ const App = () => {
               justifyContent: "center",
               alignItems: "center",
               marginBottom: "1rem",
+              flexWrap: "wrap",
+              gap: isMobile ? "0.5rem" : "1rem",
             }}
           >
             <img
               src="/reciclamente-logo.png"
               alt="ReciclaMente Logo"
               style={{
-                maxWidth: "80px",
-                marginRight: "1rem",
+                maxWidth: isMobile ? "60px" : "80px",
+                height: "auto",
               }}
             />
             <h1
               style={{
-                fontSize: "2.2rem",
+                fontSize: isMobile ? "1.8rem" : "2.2rem",
                 fontWeight: "700",
                 color: colors.darkGreen,
                 margin: "0",
+                textAlign: "center",
               }}
             >
               ReciclaMente
@@ -482,15 +503,25 @@ const App = () => {
           </div>
           <p
             style={{
-              fontSize: "1.2rem",
+              fontSize: isMobile ? "1rem" : "1.2rem",
               color: colors.mediumGreen,
               fontWeight: "500",
               marginBottom: "1.5rem",
+              padding: isMobile ? "0 1rem" : "0",
             }}
           >
             Encontre todos os pares e aprenda sobre reciclagem!
           </p>
-          <div style={{ display: "flex", gap: "1rem", justifyContent: "center", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: isMobile ? "0.5rem" : "1rem",
+              justifyContent: "center",
+              alignItems: "center",
+              flexWrap: "wrap",
+              padding: isMobile ? "0 0.5rem" : "0",
+            }}
+          >
             <button
               onClick={handleBackToHome}
               style={{
@@ -498,23 +529,25 @@ const App = () => {
                 color: colors.darkGreen,
                 border: `2px solid ${colors.darkGreen}`,
                 borderRadius: "8px",
-                padding: "0.5rem 1.25rem",
-                fontSize: "0.9rem",
+                padding: isMobile ? "0.5rem 1rem" : "0.5rem 1.25rem",
+                fontSize: isMobile ? "0.8rem" : "0.9rem",
                 fontWeight: "600",
                 cursor: "pointer",
                 transition: "all 0.2s ease",
+                minWidth: isMobile ? "auto" : "120px",
               }}
               className="btn-hover-effect"
             >
-              Voltar ao Menu
+              {isMobile ? "Menu" : "Voltar ao Menu"}
             </button>
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
                 gap: "0.5rem",
-                fontSize: "0.9rem",
+                fontSize: isMobile ? "0.8rem" : "0.9rem",
                 color: colors.mediumGreen,
+                flexWrap: "nowrap",
               }}
             >
               <span>Curiosidades:</span>
@@ -530,6 +563,7 @@ const App = () => {
                   border: "none",
                   cursor: "pointer",
                   transition: "all 0.2s ease",
+                  minWidth: "40px",
                 }}
                 className="btn-hover-effect"
               >
@@ -545,11 +579,12 @@ const App = () => {
             backgroundColor: "#E8F4DF",
             color: colors.darkGreen,
             borderRadius: "10px",
-            padding: "0.75rem 1.25rem",
+            padding: isMobile ? "0.75rem 1rem" : "0.75rem 1.25rem",
             marginBottom: "1.5rem",
             textAlign: "center",
             border: `1px solid ${colors.brightGreen}`,
             fontWeight: "500",
+            fontSize: isMobile ? "0.9rem" : "1rem",
           }}
           role="alert"
         >
@@ -557,10 +592,12 @@ const App = () => {
           {isTimerPaused && (
             <span
               style={{
-                marginLeft: "1rem",
-                fontSize: "0.9rem",
+                marginLeft: isMobile ? "0.5rem" : "1rem",
+                fontSize: isMobile ? "0.8rem" : "0.9rem",
                 color: colors.mediumGreen,
                 fontStyle: "italic",
+                display: isMobile ? "block" : "inline",
+                marginTop: isMobile ? "0.25rem" : "0",
               }}
             >
               (Timer pausado)
@@ -569,21 +606,19 @@ const App = () => {
         </div>
 
         <div
-          className="row"
+          className="game-layout"
           style={{
-            display: "flex",
-            flexWrap: "wrap",
-            margin: "0 -15px",
+            display: "grid",
+            gridTemplateColumns: isMobile ? "1fr" : "2fr 1fr",
+            gap: isMobile ? "1.5rem" : "2rem",
+            alignItems: "start",
           }}
         >
           <div
-            className="col-md-8"
+            className="game-board-container"
             style={{
-              flex: "0 0 66.666667%",
-              maxWidth: "66.666667%",
-              padding: "0 15px",
-              marginBottom: "1.5rem",
               position: "relative",
+              order: isMobile ? 2 : 1,
             }}
           >
             <GameBoard cards={cards} onCardClick={handleCardClick} />
@@ -594,28 +629,31 @@ const App = () => {
                 color: "white",
                 border: "none",
                 borderRadius: "50%",
-                width: "40px",
-                height: "40px",
-                fontSize: "1.2rem",
+                width: isMobile ? "35px" : "40px",
+                height: isMobile ? "35px" : "40px",
+                fontSize: isMobile ? "1rem" : "1.2rem",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                marginRight: "10px",
                 cursor: "pointer",
                 position: "absolute",
-                top: "-20px",
-                left: 0,
+                top: isMobile ? "-15px" : "-20px",
+                left: isMobile ? "5px" : "0",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
               }}
+              className="btn-hover-effect"
             >
               ?
             </button>
           </div>
+
           <div
-            className="col-md-4"
+            className="controls-container"
             style={{
-              flex: "0 0 33.333333%",
-              maxWidth: "33.333333%",
-              padding: "0 15px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
+              order: isMobile ? 1 : 2,
             }}
           >
             <Scoreboard moves={moves} matchedPairs={matchedPairs} totalPairs={totalPairs} timer={timer} />
@@ -632,22 +670,19 @@ const App = () => {
                 color: colors.mediumGreen,
                 border: `2px solid ${colors.mediumGreen}`,
                 borderRadius: "8px",
-                padding: "0.85rem",
-                fontSize: "1rem",
+                padding: isMobile ? "0.75rem" : "0.85rem",
+                fontSize: isMobile ? "0.9rem" : "1rem",
                 fontWeight: "600",
                 width: "100%",
-                marginTop: "1rem",
                 cursor: "pointer",
                 transition: "all 0.2s ease",
               }}
               className="btn-hover-effect"
             >
-              Ver Melhores Pontuações
+              {isMobile ? "Pontuações" : "Ver Melhores Pontuações"}
             </button>
           </div>
         </div>
-
-        {/* <GameInstructions /> */}
       </div>
 
       <GameOver
@@ -688,7 +723,7 @@ const App = () => {
         colors={colors}
       />
 
-      {/* CSS para efeitos de hover nos botões */}
+      {/* CSS para efeitos de hover nos botões e responsividade */}
       <style jsx>{`
         .btn-hover-effect:hover {
           transform: translateY(-2px);
@@ -698,15 +733,133 @@ const App = () => {
           transform: translateY(1px);
         }
 
+        /* Responsividade melhorada */
         @media (max-width: 768px) {
-          .row {
-            flex-direction: column;
+          .memory-game {
+            padding: 0.75rem !important;
           }
 
-          .col-md-8,
-          .col-md-4 {
-            flex: 0 0 100%;
-            max-width: 100%;
+          .container {
+            padding: 0 !important;
+          }
+
+          .game-layout {
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
+          }
+
+          .status-message {
+            margin-bottom: 1rem !important;
+            padding: 0.5rem 0.75rem !important;
+            font-size: 0.85rem !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .memory-game {
+            padding: 0.5rem !important;
+          }
+
+          h1 {
+            font-size: 1.5rem !important;
+          }
+
+          .status-message {
+            font-size: 0.8rem !important;
+          }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+          .game-layout {
+            grid-template-columns: 1.8fr 1fr !important;
+          }
+        }
+
+        /* Melhorias para tablets em orientação portrait */
+        @media (max-width: 1024px) and (orientation: portrait) {
+          .game-layout {
+            grid-template-columns: 1fr !important;
+            gap: 1.5rem !important;
+          }
+
+          .controls-container {
+            order: 1 !important;
+          }
+
+          .game-board-container {
+            order: 2 !important;
+          }
+        }
+
+        /* Melhorias para dispositivos muito pequenos */
+        @media (max-width: 360px) {
+          .memory-game {
+            padding: 0.25rem !important;
+          }
+
+          header {
+            margin-bottom: 1rem !important;
+          }
+
+          h1 {
+            font-size: 1.3rem !important;
+          }
+
+          .status-message {
+            padding: 0.5rem !important;
+            font-size: 0.75rem !important;
+          }
+        }
+
+        /* Melhorias para telas largas */
+        @media (min-width: 1200px) {
+          .container {
+            max-width: 1400px !important;
+          }
+
+          .game-layout {
+            grid-template-columns: 2.5fr 1fr !important;
+            gap: 3rem !important;
+          }
+        }
+
+        /* Ajustes para altura da tela */
+        @media (max-height: 600px) and (orientation: landscape) {
+          .memory-game {
+            padding: 0.5rem !important;
+          }
+
+          header {
+            margin-bottom: 1rem !important;
+          }
+
+          .status-message {
+            margin-bottom: 1rem !important;
+            padding: 0.5rem !important;
+          }
+
+          .game-layout {
+            gap: 1rem !important;
+          }
+        }
+
+        /* Melhorias de acessibilidade para dispositivos touch */
+        @media (hover: none) and (pointer: coarse) {
+          .btn-hover-effect:hover {
+            transform: none;
+            filter: none;
+          }
+
+          .btn-hover-effect:active {
+            transform: scale(0.95);
+            filter: brightness(0.9);
+          }
+        }
+
+        /* Ajustes específicos para Safari iOS */
+        @supports (-webkit-touch-callout: none) {
+          .memory-game {
+            min-height: -webkit-fill-available !important;
           }
         }
       `}</style>

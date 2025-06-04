@@ -80,7 +80,7 @@ const GameBoard = ({ cards, onCardClick }) => {
             margin: "0 0 1.5rem 0",
           }}
         >
-          Clique em <strong>"Novo Jogo"</strong> para iniciar sua aventura de reciclagem!
+          Clique em <strong>"Iniciar Jogo"</strong> para iniciar sua aventura de reciclagem!
         </p>
 
         {/* Animação sutil */}
