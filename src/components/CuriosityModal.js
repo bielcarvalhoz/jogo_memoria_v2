@@ -28,7 +28,7 @@ const CuriosityModal = ({ show, curiosity, onClose, colors }) => {
           padding: "2rem",
           maxWidth: "500px",
           width: "100%",
-          maxHeight: "80vh",
+          maxHeight: "95vh",
           overflow: "auto",
           position: "relative",
           boxShadow: "0 20px 60px rgba(0, 0, 0, 0.3)",
