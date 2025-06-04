@@ -160,6 +160,7 @@ const App = () => {
   const [isHighScore, setIsHighScore] = useState(false);
   const [currentScore, setCurrentScore] = useState(0);
   const [showInstructions, setShowInstructions] = useState(false);
+  const [gameInitialized, setGameInitialized] = useState(false); // Novo estado para controlar se o jogo foi iniciado
 
   // Novos estados para o sistema de curiosidades
   const [showCuriosity, setShowCuriosity] = useState(false);
@@ -223,6 +224,7 @@ const App = () => {
     setIsActive(true);
     setGameOver(false);
     setIsTimerPaused(false);
+    setGameInitialized(true); // Marca que o jogo foi inicializado
     setStatusMessage("Jogo iniciado! Encontre os pares.");
   }, [difficulty]);
 
@@ -365,18 +367,22 @@ const App = () => {
     return Math.max(baseScore - timeDeduction - movesDeduction, 100);
   };
 
-  // Altera a dificuldade do jogo
+  // Altera a dificuldade do jogo - agora reseta o estado de inicialização
   const handleDifficultyChange = (newDifficulty) => {
     if (!isActive || window.confirm("Mudar a dificuldade irá reiniciar o jogo. Deseja continuar?")) {
       setDifficulty(newDifficulty);
       setIsActive(false);
+      setGameInitialized(false); // Reseta o estado de inicialização
+      setCards([]); // Limpa as cartas
+      setStatusMessage("Clique em 'Novo Jogo' para começar!");
     }
   };
 
   // Inicia um novo jogo
   const handleStartGame = () => {
     setShowHomeScreen(false);
-    initializeGame();
+    // Não inicia o jogo automaticamente, apenas sai da tela inicial
+    setStatusMessage("Clique em 'Novo Jogo' para começar!");
   };
 
   // Volta para a tela inicial
@@ -384,6 +390,8 @@ const App = () => {
     setShowHomeScreen(true);
     setIsActive(false);
     setShowScoreboard(false);
+    setGameInitialized(false); // Reseta o estado de inicialização
+    setCards([]); // Limpa as cartas
   };
 
   // Salva a pontuação do jogador
@@ -426,12 +434,7 @@ const App = () => {
     setGameOver(true);
   };
 
-  // Efeito para inicializar o jogo quando a dificuldade muda e o jogo está ativo
-  useEffect(() => {
-    if (!showHomeScreen && !isActive && cards.length === 0) {
-      initializeGame();
-    }
-  }, [difficulty, isActive, cards.length, initializeGame, showHomeScreen]);
+  // REMOVIDO: O useEffect que iniciava automaticamente o jogo
 
   if (showHomeScreen) {
     return (
@@ -561,7 +564,7 @@ const App = () => {
           }}
           role="alert"
         >
-          {statusMessage}
+          {statusMessage || (gameInitialized ? "Encontre os pares!" : "Clique em 'Novo Jogo' para começar!")}
           {isTimerPaused && (
             <span
               style={{
