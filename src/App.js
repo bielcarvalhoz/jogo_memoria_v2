@@ -300,7 +300,9 @@ const App = () => {
         setStatusMessage("Par encontrado! Continue assim!");
 
         // Mostra curiosidade se estiver habilitada
-        showCuriosityModal(firstCard.item);
+        setTimeout(() => {
+          showCuriosityModal(firstCard.item);
+        }, 600);
       } else {
         // Não é um par, vira as cartas de volta após um delay
         setStatusMessage("Não é um par. Tente novamente!");
