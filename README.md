@@ -7,15 +7,15 @@ Um jogo da memória interativo desenvolvido com React e Node.js. O jogo inclui d
 - Tela inicial com botões para jogar e ver créditos
 - Três níveis de dificuldade: Fácil (8 cartas), Médio (12 cartas) e Difícil (16 cartas)
 - Sistema de pontuação baseado em tempo e movimentos
-- Armazenamento de pontuações em um banco de dados SQLite
+- Armazenamento de pontuações em um banco de dados Firebase
 - Placar com as 10 melhores pontuações
-- Interface responsiva com Bootstrap
+- Interface responsiva com React
 
 ## Tecnologias Utilizadas
 
-- Frontend: React, Bootstrap
+- Frontend: React
 - Backend: Node.js, Express
-- Banco de Dados: SQLite
+- Banco de Dados: Firebase
 
 ## Pré-requisitos
 
@@ -47,36 +47,7 @@ Este comando inicia tanto o servidor backend (na porta 5000) quanto o frontend (
 
 ## Scripts Disponíveis
 
-- `npm run dev`: Inicia o aplicativo em modo de desenvolvimento (frontend e backend)
-- `npm run client`: Inicia apenas o cliente React
-- `npm run server`: Inicia apenas o servidor Express com hot-reloading
-- `npm run build`: Compila o aplicativo para produção
 - `npm start`: Inicia o servidor em modo de produção
-
-## Estrutura do Projeto
-
-```
-memory-game/
-├── public/                  # Arquivos públicos
-├── src/                     # Código fonte do frontend
-│   ├── components/          # Componentes React
-│   │   ├── Card.js          # Componente de carta
-│   │   ├── GameBoard.js     # Tabuleiro do jogo
-│   │   ├── GameControls.js  # Controles do jogo
-│   │   ├── GameInstructions.js # Instruções do jogo
-│   │   ├── GameOver.js      # Modal de fim de jogo
-│   │   ├── HomeScreen.js    # Tela inicial
-│   │   ├── NameInput.js     # Modal para inserir nome
-│   │   ├── ScoreBoard.js    # Componente de pontuação do jogo atual
-│   │   └── Scoreboard.js    # Modal com as melhores pontuações
-│   ├── App.js               # Componente principal
-│   ├── App.css              # Estilos
-│   └── index.js             # Ponto de entrada
-├── server.js                # Servidor Express
-├── scores.db                # Banco de dados SQLite (criado automaticamente)
-├── package.json             # Dependências e scripts
-└── README.md                # Documentação
-```
 
 ## Como Jogar
 
